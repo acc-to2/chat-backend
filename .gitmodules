@@ -1,0 +1,3 @@
+[submodule "chat-config"]
+	path = chat-config
+	url = https://github.com/acc-to2/chat-config.git
