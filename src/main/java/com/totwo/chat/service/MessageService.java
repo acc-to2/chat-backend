@@ -21,4 +21,19 @@ public interface MessageService {
      * @return 메세지 목록
      */
     MessageDto[] getMessagesByRoom(String roomId);
+
+    /**
+     * 특정 메세지 이후로 온 메세지 수를 조회합니다.
+     *
+     * @param roomId 조회할 채팅방 ID
+     * @return 메세지 수
+     */
+    int countMessagesAfter(String roomId, String messageId);
+
+    /**
+     * 채팅방의 마지막 메세지를 조회합니다.
+     * @param roomId 조회할 채팅방 ID
+     * @return 마지막 메세지
+     */
+    MessageDto getLastMessage(String roomId);
 }
