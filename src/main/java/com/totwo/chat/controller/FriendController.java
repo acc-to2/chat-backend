@@ -7,9 +7,7 @@ import com.totwo.chat.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +25,14 @@ public class FriendController {
         List<UserDto> userList = friendService.getFriends(email);
         log.info("[api /friend/list/get]: {}", userList);
         return CommonResponse.ok(userList);
+    }
+
+    @PostMapping("/private/add")
+    public ResponseEntity<CommonResponse<UserDto>> addFriend(@RequestBody UserDto userDto) {
+        String myEmail = authUtils.getEmail();
+        String friendEmail = userDto.getEmail();
+        friendService.registerFriend(myEmail, friendEmail);
+        log.info("[api /friend/private/add]");
+        return CommonResponse.created(null);
     }
 }
