@@ -2,6 +2,8 @@ package com.totwo.chat.service;
 
 import com.totwo.chat.dto.UserDto;
 
+import java.util.List;
+
 /**
  * 친구 관련 로직을 정의하는 서비스 인터페이스입니다.
  * <p>
@@ -31,5 +33,5 @@ public interface FriendService {
      * @param userEmail 사용자의 이메일
      * @return 친구 목록
      */
-    UserDto[] getFriends(String userEmail);
+    List<UserDto> getFriends(String userEmail);
 }
