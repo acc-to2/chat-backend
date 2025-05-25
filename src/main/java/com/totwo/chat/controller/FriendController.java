@@ -41,7 +41,20 @@ public class FriendController {
             log.info("[api /friend/private/add]");
             return CommonResponse.created(null);
         } catch (Exception e) {
-            return CommonResponse.failed(new CustomError("00001", e.getMessage()));
+            return CommonResponse.failed(new CustomError("00000", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/private/delete")
+    public ResponseEntity<CommonResponse<Object>> deleteFriend(@RequestBody UserDto userDto) {
+        try {
+            String myEmail = authUtils.getEmail();
+            String friendEmail = userDto.getEmail();
+            friendService.deleteFriend(myEmail, friendEmail);
+            log.info("[api /friend/private/delete]");
+            return CommonResponse.ok(null);
+        } catch (Exception e) {
+            return CommonResponse.failed(new CustomError("00000", e.getMessage()));
         }
     }
 }
