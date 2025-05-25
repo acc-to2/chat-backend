@@ -19,9 +19,5 @@ public class AuthUtils {
     public String getEmail() {
         return getCurrentUser().email();
     }
-
-    public String getNickname() {
-        return getCurrentUser().nickname();
-    }
 }
 
