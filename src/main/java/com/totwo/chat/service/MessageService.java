@@ -2,6 +2,8 @@ package com.totwo.chat.service;
 
 import com.totwo.chat.dto.MessageDto;
 
+import java.util.List;
+
 public interface MessageService {
     /**
      * 채팅방에 메세지를 저장합니다.
@@ -20,7 +22,7 @@ public interface MessageService {
      * @param roomId 조회할 채팅방 ID
      * @return 메세지 목록
      */
-    MessageDto[] getMessagesByRoom(String roomId);
+    List<MessageDto> getMessagesByRoom(String roomId);
 
     /**
      * 특정 메세지 이후로 온 메세지 수를 조회합니다.

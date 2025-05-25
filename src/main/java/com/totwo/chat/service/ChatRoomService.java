@@ -3,6 +3,8 @@ package com.totwo.chat.service;
 import com.totwo.chat.dto.ChatRoomDto;
 import com.totwo.chat.dto.UserDto;
 
+import java.util.List;
+
 /**
  * 채팅방 관련 로직을 정의하는 서비스 인터페이스입니다.
  * <p>
@@ -13,12 +15,12 @@ public interface ChatRoomService {
     /**
      * 사용자가 참여중인 채팅방 목록을 조회합니다.
      */
-    ChatRoomDto[] getChatRoomsByUser(String userEmail);
+    List<ChatRoomDto> getChatRoomsByUser(String userEmail);
 
     /**
      * 채팅방에 참여중인 사용자 목록을 조회합니다.
      */
-    UserDto[] getUsersInChatRoom(String roomId);
+    List<UserDto> getUsersInChatRoom(String roomId);
 
     /**
      * 채팅방에 사용자를 추가합니다.
