@@ -40,5 +40,13 @@ public abstract class DynamoBaseRepository<T> {
             k.partitionValue(pk).sortValue(sk);
         }));
     }
+
+    // TODO: BatchWriteItem 사용...?
+    public void deleteSkBeginsWith(String pk, String skPrefix) {
+        List<T> items = loadSkBeginsWith(pk, skPrefix);
+        for (T item : items) {
+            table.deleteItem(item);
+        }
+    }
 }
 

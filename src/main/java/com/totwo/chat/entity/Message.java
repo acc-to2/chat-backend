@@ -13,7 +13,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @DynamoDbBean
 public class Message extends DynamoBaseEntity {
     private String content;
-    private String senderId;
-    private Long timestamp;
+    private String senderEmail;
+    private String timestamp;
     // PK: ROOM#roomId, SK: MSG#timestamp_uuid
 }
