@@ -15,8 +15,8 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
         String email = jwt.getClaimAsString("email");
-        String nickname = jwt.getSubject();
-        CustomUserPrincipal principal = new CustomUserPrincipal(email, nickname);
+//        String nickname = jwt.getSubject();
+        CustomUserPrincipal principal = new CustomUserPrincipal(email);
         return new UsernamePasswordAuthenticationToken(principal, jwt, Collections.emptyList());
     }
 }
