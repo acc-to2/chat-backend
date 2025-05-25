@@ -1,12 +1,13 @@
 package com.totwo.chat.entity.base;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @DynamoDbBean
 public abstract class DynamoBaseEntity {
     protected String pk;
