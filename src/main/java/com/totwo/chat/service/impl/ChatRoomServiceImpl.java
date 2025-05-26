@@ -7,6 +7,7 @@ import com.totwo.chat.entity.ChatRoomParticipant;
 import com.totwo.chat.entity.UserRoomParticipation;
 import com.totwo.chat.repository.*;
 import com.totwo.chat.service.ChatRoomService;
+import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.UserService;
 import com.totwo.chat.service.util.PrefixUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final UserService userService;
+    private final MessageService messageService;
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRoomParticipationRepository userRoomParticipationRepository;
@@ -28,13 +30,32 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final MessageRepository messageRepository;
 
     @Override
+    public void updateLastReadMessage(String roomId, String userEmail) {
+        String userPrefix = PrefixUtil.withUserPrefix(userEmail);
+        String roomPrefix = PrefixUtil.withRoomPrefix(roomId);
+
+        userRoomParticipationRepository.save(
+                UserRoomParticipation.builder()
+                        .pk(userPrefix)
+                        .sk(roomPrefix)
+                        .lastReadMessage(messageRepository.getLastMessage(roomPrefix).toString())
+                        .build());
+    }
+
+    @Override
     public List<ChatRoomDto> getChatRoomsByUser(String userEmail) {
-        return userRoomParticipationRepository
-                .loadSkBeginsWith(PrefixUtil.withUserPrefix(userEmail), PrefixUtil.ROOM_PREFIX)
-                .stream()
+        List<UserRoomParticipation> userRoomParticipationList = userRoomParticipationRepository
+                .loadSkBeginsWith(PrefixUtil.withUserPrefix(userEmail), PrefixUtil.ROOM_PREFIX);
+
+        List<ChatRoomDto> chatRoomDtoList = userRoomParticipationList.stream()
                 .map(userRoom -> getChatRoomById(PrefixUtil.removeRoomPrefix(userRoom.getSk())))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
+                .toList();
+
+        return chatRoomDtoList.stream()
+                .peek(chatRoom -> chatRoom.setUnreadMessageCount(
+                        messageService.countUnreadMessages(userEmail, chatRoom.getRoomId())))
                 .toList();
     }
 
@@ -109,6 +130,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                         .roomId(roomId)
                         .roomName(room.getRoomName())
                         .isGroup(room.getIsGroup())
+                        .lastMessage(messageService.getLastMessage(roomId).orElse(null))
                         .build());
     }
 }

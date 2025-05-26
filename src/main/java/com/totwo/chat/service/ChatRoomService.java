@@ -14,7 +14,17 @@ import java.util.Optional;
  */
 public interface ChatRoomService {
     /**
+     * 사용자가 채팅방에서 일시적으로 나갈 때 마지막으로 읽은 메세지를 업데이트하는 용도입니다.
+     */
+    void updateLastReadMessage(String roomId, String userEmail);
+
+    /**
      * 사용자가 참여중인 채팅방 목록을 조회합니다.
+     * <p>
+     *     추가: 채팅방의 마지막 메세지와 해당 사용자가 읽지 않은 메세지 수를 포함하여 반환합니다.
+     *     채팅방에 메세지가 없을 경우 마지막 메세지는 null로 설정됩니다.
+     * </p>
+     * @param userEmail 사용자의 이메일
      */
     List<ChatRoomDto> getChatRoomsByUser(String userEmail);
 

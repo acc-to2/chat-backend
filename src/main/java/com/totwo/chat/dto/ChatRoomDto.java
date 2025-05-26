@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 /**
  * 채팅방 메타데이터를 담는 DTO 클래스입니다.
  */
@@ -29,4 +31,14 @@ public class ChatRoomDto {
      * true면 그룹 채팅방, false면 1:1 채팅방
      */
     private boolean isGroup;
+
+    /**
+     * 채팅방의 마지막 메세지
+     */
+    private MessageDto lastMessage;
+
+    /**
+     * 해당 사용자가 읽지 않은 메세지 수
+     */
+    private int unreadMessageCount;
 }
