@@ -45,7 +45,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8080", "ws://localhost:8080", "https://jiangxy.github.io"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:8080",
+                "ws://localhost:8080",
+                "http://localhost:5173",
+                "https://api.to2-chat.shop",
+                "http://api.to2-chat.shop",
+                "https://to2-chat.shop",
+                "http://to2-chat.shop"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
