@@ -79,7 +79,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public void createChatRoom(String roomName, boolean isGroup) {
+    public String createChatRoom(String roomName, boolean isGroup) {
         String roomId = UUID.randomUUID().toString();
 
         chatRoomRepository.save(
@@ -89,6 +89,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                         .roomName(roomName)
                         .isGroup(isGroup)
                         .build());
+
+        return roomId;
     }
 
     @Override

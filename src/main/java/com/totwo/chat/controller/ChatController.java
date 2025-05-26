@@ -3,6 +3,7 @@ package com.totwo.chat.controller;
 import com.totwo.chat.common.CommonResponse;
 import com.totwo.chat.dto.ChatRoomDto;
 import com.totwo.chat.dto.MessageDto;
+import com.totwo.chat.dto.RequestCreateRoomDto;
 import com.totwo.chat.security.AuthUtils;
 import com.totwo.chat.service.ChatRoomService;
 import com.totwo.chat.service.MessageService;
@@ -38,5 +39,21 @@ public class ChatController {
         String email = authUtils.getEmail();
         chatRoomService.addUserToChatRoom(roomId, email);
         return CommonResponse.created(null);
+    }
+
+    @PostMapping("/room/create")
+    public ResponseEntity<CommonResponse<Object>> createRoom(@RequestBody RequestCreateRoomDto requestDto) {
+        String email = authUtils.getEmail();
+        String roomId = chatRoomService.createChatRoom(requestDto.title(), requestDto.isGroup());
+        if(requestDto.isGroup()) { // 그룹 채팅방일 때
+            for(String e : requestDto.emailList()) {
+                chatRoomService.addUserToChatRoom(roomId, e);
+            }
+        }
+        else { // 일대일 채팅방일 때
+            chatRoomService.addUserToChatRoom(roomId, email);
+        }
+
+        return CommonResponse.created(roomId);
     }
 }
