@@ -1,5 +1,11 @@
+logging:
+  level:
+    root: INFO
+    org.springframework.jms: DEBUG
+    com.totwo.chat.service.util.MqListener: DEBUG
+
 spring:
   application:
     name: chat
   profiles:
-    active: cognito, dynamodb
+    active: cognito, dynamodb, mq
