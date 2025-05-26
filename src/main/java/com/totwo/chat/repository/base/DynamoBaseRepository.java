@@ -12,7 +12,7 @@ public abstract class DynamoBaseRepository<T> {
     protected final DynamoDbTable<T> table;
 
     public DynamoBaseRepository(DynamoDbEnhancedClient enhancedClient, Class<T> clazz) {
-        this.table = enhancedClient.table("To2", TableSchema.fromBean(clazz));
+        this.table = enhancedClient.table("to2", TableSchema.fromBean(clazz));
     }
 
     public void save(T item) {

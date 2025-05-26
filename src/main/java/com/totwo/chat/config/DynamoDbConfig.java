@@ -17,9 +17,6 @@ public class DynamoDbConfig {
     @Value("${aws.dynamodb.region}")
     private String region;
 
-    @Value("${aws.dynamodb.endpoint}")
-    private String endpoint;
-
     @Value("${aws.dynamodb.access-key}")
     private String accessKey;
 
@@ -30,7 +27,6 @@ public class DynamoDbConfig {
     public DynamoDbClient dynamoDbClient() {
         return DynamoDbClient.builder()
                 .region(Region.of(region))
-                .endpointOverride(URI.create(endpoint))
                 .credentialsProvider(
                         StaticCredentialsProvider.create(
                                 AwsBasicCredentials.create(accessKey, secretKey)
