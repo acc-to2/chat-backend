@@ -56,4 +56,10 @@ public class ChatController {
 
         return CommonResponse.created(roomId);
     }
+
+    @DeleteMapping("/{room_id}/delete")
+    public ResponseEntity<CommonResponse<Object>> deleteRoom(@PathVariable(name = "room_id") String roomId) {
+        chatRoomService.deleteChatRoom(roomIchd);
+        return CommonResponse.ok(null);
+    }
 }
