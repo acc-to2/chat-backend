@@ -1,0 +1,6 @@
+aws:
+  dynamodb:
+    region: ap-northeast-2
+    endpoint: http://localhost:8000 # 로컬 테스트용, 실제 배포 시 삭제
+    access-key: test
+    secret-key: test

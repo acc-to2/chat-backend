@@ -1,0 +1,72 @@
+package com.totwo.chat.service.impl;
+
+import com.totwo.chat.dto.MessageDto;
+import com.totwo.chat.entity.Message;
+import com.totwo.chat.repository.ChatRoomRepository;
+import com.totwo.chat.repository.MessageRepository;
+import com.totwo.chat.service.MessageService;
+import com.totwo.chat.service.util.PrefixUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class MessageServiceImpl implements MessageService {
+
+    private final MessageRepository messageRepository;
+    private final ChatRoomRepository chatRoomRepository;
+
+    @Override
+    public void saveMessage(String roomId, String senderEmail, String content, String timestamp) {
+        String roomIdWithPrefix = PrefixUtil.withRoomPrefix(roomId);
+
+        validateChatRoomExists(roomIdWithPrefix);
+
+        String uuid = UUID.randomUUID().toString();
+
+        messageRepository.save(
+                Message.builder()
+                        .pk(roomIdWithPrefix)
+                        .sk(timestamp + "_" + uuid)
+                        .content(content)
+                        .timestamp(timestamp)
+                        .build()
+        );
+    }
+
+    @Override
+    public List<MessageDto> getMessagesByRoom(String roomId) {
+        String roomIdWithPrefix = PrefixUtil.withRoomPrefix(roomId);
+
+        validateChatRoomExists(roomIdWithPrefix);
+
+        return messageRepository.loadSkBeginsWith(roomIdWithPrefix, PrefixUtil.MSG_PREFIX)
+                .stream()
+                .map(message -> MessageDto.builder()
+                        .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
+                        .senderEmail(message.getSenderEmail())
+                        .content(message.getContent())
+                        .timestamp(message.getTimestamp())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public int countMessagesAfter(String roomId, String messageId) {
+        return 0;
+    }
+
+    @Override
+    public Optional<MessageDto> getLastMessage(String roomId) {
+        return null;
+    }
+
+    private void validateChatRoomExists(String roomIdWithPrefix) {
+        chatRoomRepository.load(roomIdWithPrefix, "METADATA")
+                .orElseThrow(() -> new IllegalArgumentException("Chat room not found: " + roomIdWithPrefix));
+    }
+}
