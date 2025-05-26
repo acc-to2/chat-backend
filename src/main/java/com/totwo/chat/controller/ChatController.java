@@ -1,8 +1,7 @@
 package com.totwo.chat.controller;
 
 import com.totwo.chat.common.CommonResponse;
-import com.totwo.chat.dto.MessageDto;
-import com.totwo.chat.dto.RequestCreateRoomDto;
+import com.totwo.chat.dto.*;
 import com.totwo.chat.security.AuthUtils;
 import com.totwo.chat.service.ChatRoomService;
 import com.totwo.chat.service.MessageService;
@@ -11,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,10 +22,34 @@ public class ChatController {
     private final MessageService messageService;
     private final ChatRoomService chatRoomService;
 
-//    @GetMapping("/room/list/group")
-//    public List<ChatRoomDto> getGroupChatRoomList() {
-//        return
-//    }
+    @GetMapping("/room/list")
+    public ResponseEntity<CommonResponse<ResponseChatRoomListDto>> getChatRoomList() {
+        String email = authUtils.getEmail();
+        List<ResponseChatRoomDto> groupRoomList = new ArrayList<>();
+        List<ResponseChatRoomDto> privateRoomList = new ArrayList<>();
+        List<ChatRoomDto> roomList = chatRoomService.getChatRoomsByUser(email);
+        for (ChatRoomDto room : roomList) {
+            ResponseChatRoomDto tmpRoom = ResponseChatRoomDto.builder()
+                    .roomId(room.getRoomId())
+                    .title(room.getRoomName())
+                    .message(room.getLastMessage().getContent())
+                    .count(room.getUnreadMessageCount())
+                    .build();
+
+            if(room.isGroup()) {
+                groupRoomList.add(tmpRoom);
+            }
+            else {
+                privateRoomList.add(tmpRoom);
+            }
+        }
+        ResponseChatRoomListDto chatRoom = ResponseChatRoomListDto.builder()
+                .groupRoomList(groupRoomList)
+                .privateRoomList(privateRoomList)
+                .build();
+
+        return CommonResponse.ok(chatRoom);
+    }
 
     @GetMapping("/{room_id}/list/get")
     public ResponseEntity<CommonResponse<List<MessageDto>>> getList(@PathVariable(name = "room_id") String roomId) {
