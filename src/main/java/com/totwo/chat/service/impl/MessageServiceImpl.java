@@ -11,6 +11,9 @@ import com.totwo.chat.service.util.PrefixUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,7 +56,8 @@ public class MessageServiceImpl implements MessageService {
                         .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
                         .senderEmail(message.getSenderEmail())
                         .content(message.getContent())
-                        .timestamp(message.getTimestamp())
+                        .timestamp(Instant.ofEpochMilli(Long.parseLong(message.getTimestamp()))
+                                .atZone(ZoneId.of("Asia/Seoul")).toString())
                         .build())
                 .toList();
     }

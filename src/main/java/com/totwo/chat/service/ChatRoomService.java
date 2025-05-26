@@ -55,7 +55,7 @@ public interface ChatRoomService {
      * @param roomName 채팅방 이름 (그룹 채팅방의 경우는 그룹 이름, 1:1 채팅방의 경우는 null)
      * @param isGroup  그룹 채팅방 여부 (true면 그룹 채팅방, false면 1:1 채팅방)
      */
-    void createChatRoom(String roomName, boolean isGroup);
+    String createChatRoom(String roomName, boolean isGroup);
 
     /**
      * 채팅방을 삭제합니다.

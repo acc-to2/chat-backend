@@ -11,7 +11,7 @@ public record CommonResponse<T>(
 ) {
 
     public static <T> ResponseEntity<CommonResponse<T>> ok(@Nullable final T data) {
-        return ResponseEntity.ok(new CommonResponse<>(true, data, null));
+        return ResponseEntity.status(HttpStatus.OK).body(new CommonResponse<>(true, data, null));
     }
 
     public static <T> ResponseEntity<CommonResponse<T>> created(@Nullable final T data) {
