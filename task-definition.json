@@ -90,7 +90,6 @@
     },
     "registeredAt": "2025-05-26T14:22:11.556Z",
     "registeredBy": "arn:aws:iam::416536687282:user/2171046",
-    "enableFaultInjection": false,
     "tags": [
         {
             "key": "name",
