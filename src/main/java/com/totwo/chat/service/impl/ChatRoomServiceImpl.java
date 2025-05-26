@@ -13,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 .loadSkBeginsWith(PrefixUtil.withUserPrefix(userEmail), PrefixUtil.ROOM_PREFIX)
                 .stream()
                 .map(userRoom -> getChatRoomById(PrefixUtil.removeRoomPrefix(userRoom.getSk())))
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 
@@ -42,13 +44,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 .loadSkBeginsWith(PrefixUtil.withRoomPrefix(roomId), PrefixUtil.USER_PREFIX)
                 .stream()
                 .map(roomUser -> userService.getUserByEmail(PrefixUtil.removeUserPrefix(roomUser.getSk())))
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 
     @Override
     public void addUserToChatRoom(String roomId, String userEmail) {
-        if (userService.getUserByEmail(userEmail) == null) {
+        if (userService.getUserByEmail(userEmail).isEmpty()) {
             throw new IllegalArgumentException("User not found: " + userEmail);
         }
         userRoomParticipationRepository.save(
@@ -76,7 +79,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public void createChatRoom(String roomId, String roomName, boolean isGroup) {
+    public void createChatRoom(String roomName, boolean isGroup) {
+        String roomId = UUID.randomUUID().toString();
+
         chatRoomRepository.save(
                 ChatRoom.builder()
                         .pk(PrefixUtil.withRoomPrefix(roomId))
@@ -98,13 +103,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public ChatRoomDto getChatRoomById(String roomId) {
+    public Optional<ChatRoomDto> getChatRoomById(String roomId) {
         return chatRoomRepository.load(PrefixUtil.withRoomPrefix(roomId), "METADATA")
                 .map(room -> ChatRoomDto.builder()
                         .roomId(roomId)
                         .roomName(room.getRoomName())
                         .isGroup(room.getIsGroup())
-                        .build())
-                .orElse(null);
+                        .build());
     }
 }

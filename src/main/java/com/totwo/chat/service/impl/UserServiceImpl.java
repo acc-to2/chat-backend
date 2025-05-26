@@ -9,6 +9,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -27,12 +29,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
+    public Optional<UserDto> getUserByEmail(String email) {
         return userRepository.load(PrefixUtil.withUserPrefix(email), "PROFILE")
                 .map(user -> UserDto.builder()
                         .email(email)
                         .nickName(user.getNickName())
-                        .build())
-                .orElse(null);
+                        .build());
     }
 }
