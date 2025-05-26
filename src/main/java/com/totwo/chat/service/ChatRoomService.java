@@ -4,6 +4,7 @@ import com.totwo.chat.dto.ChatRoomDto;
 import com.totwo.chat.dto.UserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 채팅방 관련 로직을 정의하는 서비스 인터페이스입니다.
@@ -41,11 +42,10 @@ public interface ChatRoomService {
     /**
      * 채팅방을 생성합니다.
      *
-     * @param roomId 채팅방 ID
      * @param roomName 채팅방 이름 (그룹 채팅방의 경우는 그룹 이름, 1:1 채팅방의 경우는 null)
-     * @param isGroup 그룹 채팅방 여부 (true면 그룹 채팅방, false면 1:1 채팅방)
+     * @param isGroup  그룹 채팅방 여부 (true면 그룹 채팅방, false면 1:1 채팅방)
      */
-    void createChatRoom(String roomId, String roomName, boolean isGroup);
+    void createChatRoom(String roomName, boolean isGroup);
 
     /**
      * 채팅방을 삭제합니다.
@@ -60,5 +60,5 @@ public interface ChatRoomService {
      * @param roomId 조회할 채팅방 ID
      * @return 채팅방 정보 DTO
      */
-    ChatRoomDto getChatRoomById(String roomId);
+    Optional<ChatRoomDto> getChatRoomById(String roomId);
 }

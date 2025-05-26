@@ -2,4 +2,4 @@ spring:
   application:
     name: chat
   profiles:
-    active: cognito
+    active: cognito, dynamodb

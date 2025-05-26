@@ -2,6 +2,8 @@ package com.totwo.chat.service;
 
 import com.totwo.chat.dto.UserDto;
 
+import java.util.Optional;
+
 /**
  * 사용자 프로필 관련 로직을 정의하는 서비스 인터페이스입니다.
  * <p>
@@ -23,5 +25,5 @@ public interface UserService {
      * @param email 조회할 사용자의 이메일
      * @return 조회된 사용자 정보
      */
-    UserDto getUserByEmail(String email);
+    Optional<UserDto> getUserByEmail(String email);
 }
