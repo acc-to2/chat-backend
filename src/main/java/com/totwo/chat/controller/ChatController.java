@@ -1,7 +1,6 @@
 package com.totwo.chat.controller;
 
 import com.totwo.chat.common.CommonResponse;
-import com.totwo.chat.dto.ChatRoomDto;
 import com.totwo.chat.dto.MessageDto;
 import com.totwo.chat.dto.RequestCreateRoomDto;
 import com.totwo.chat.security.AuthUtils;
