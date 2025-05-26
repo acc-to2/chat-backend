@@ -12,5 +12,6 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 @AllArgsConstructor
 @DynamoDbBean
 public class UserRoomParticipation extends DynamoBaseEntity {
+    private String lastReadMessage;  // MSG#123456789_ab2cd3efg...
     // PK: USER#u1@gmail..., SK: ROOM#roomId
 }

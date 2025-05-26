@@ -2,8 +2,10 @@ package com.totwo.chat.service.impl;
 
 import com.totwo.chat.dto.MessageDto;
 import com.totwo.chat.entity.Message;
+import com.totwo.chat.entity.UserRoomParticipation;
 import com.totwo.chat.repository.ChatRoomRepository;
 import com.totwo.chat.repository.MessageRepository;
+import com.totwo.chat.repository.UserRoomParticipationRepository;
 import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.util.PrefixUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final UserRoomParticipationRepository userRoomParticipationRepository;
 
     @Override
     public void saveMessage(String roomId, String senderEmail, String content, String timestamp) {
@@ -56,13 +59,24 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public int countMessagesAfter(String roomId, String messageId) {
-        return 0;
+    public int countUnreadMessages(String roomId, String userEmail) {
+        return userRoomParticipationRepository
+                .load(PrefixUtil.withUserPrefix(userEmail), PrefixUtil.withRoomPrefix(roomId))
+                .map(UserRoomParticipation::getLastReadMessage)
+                .map(message -> messageRepository
+                        .countMessagesAfter(PrefixUtil.withRoomPrefix(roomId), message))
+                .orElse(0);
     }
 
     @Override
     public Optional<MessageDto> getLastMessage(String roomId) {
-        return null;
+        return messageRepository.getLastMessage(PrefixUtil.withRoomPrefix(roomId))
+                .map(message -> MessageDto.builder()
+                        .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
+                        .senderEmail(message.getSenderEmail())
+                        .content(message.getContent())
+                        .timestamp(message.getTimestamp())
+                        .build());
     }
 
     private void validateChatRoomExists(String roomIdWithPrefix) {

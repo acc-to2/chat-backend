@@ -27,12 +27,13 @@ public interface MessageService {
     List<MessageDto> getMessagesByRoom(String roomId);
 
     /**
-     * 특정 메세지 이후로 온 메세지 수를 조회합니다.
+     * 채팅방에서 특정 유저가 읽지 않은 메세지 수를 조회합니다.
      *
      * @param roomId 조회할 채팅방 ID
+     * @param userEmail 조회할 유저의 이메일
      * @return 메세지 수
      */
-    int countMessagesAfter(String roomId, String messageId);
+    int countUnreadMessages(String roomId, String userEmail);
 
     /**
      * 채팅방의 마지막 메세지를 조회합니다.
