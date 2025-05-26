@@ -79,7 +79,8 @@ public class MessageServiceImpl implements MessageService {
                         .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
                         .senderEmail(message.getSenderEmail())
                         .content(message.getContent())
-                        .timestamp(message.getTimestamp())
+                        .timestamp(Instant.ofEpochMilli(Long.parseLong(message.getTimestamp()))
+                                .atZone(ZoneId.of("Asia/Seoul")).toString())
                         .build());
     }
 
