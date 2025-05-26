@@ -2,7 +2,12 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java,gradle
 *-cognito.yml
 *-dynamodb.yml
+<<<<<<< Updated upstream
 *-mq.yml
+=======
+*-
+
+>>>>>>> Stashed changes
 # Custom Add
 /.idea/
 /.gradle/
