@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: 416536687282.dkr.ecr.ap-northeast-2.amazonaws.com
+  ECR_REPOSITORY: to2
   ECS_CLUSTER: to2-ecs-cluster
   ECS_SERVICE: to2-task-definition-service-ovxd3686
   ECS_TASK_DEFINITION: task-definition.json
