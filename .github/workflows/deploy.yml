@@ -25,6 +25,12 @@ jobs:
           submodules: recursive
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
+      - name: Checkout submodules to origin/main
+        run: |
+            git submodule update --init --recursive
+            git submodule foreach 'git checkout origin/main || true'
+            git submodule foreach 'git pull origin main || true'
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
