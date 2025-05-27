@@ -44,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
                         .timestamp(timestamp)
                         .build()
         );
+        log.info("Message saved: roomId={}, senderEmail={}, content={}, timestamp={}", roomId, senderEmail, content, timestamp);
     }
 
     @Override
