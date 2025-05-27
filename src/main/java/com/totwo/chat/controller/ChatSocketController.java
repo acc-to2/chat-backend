@@ -4,6 +4,7 @@ import com.totwo.chat.entity.ChatMessage;
 import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.util.MqPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ChatSocketController {
@@ -19,17 +21,13 @@ public class ChatSocketController {
     private final MessageService messageService;
 
     @MessageMapping("/{room_id}/in")
-    public void join(@DestinationVariable String roomId, ChatMessage message) {
-        message.setRoomId(roomId);
-        message.setType("IN");
-        publisher.publish(message);
+    public void join(@DestinationVariable String roomId) {
+        log.info("User in room: {}", roomId);
     }
 
     @MessageMapping("/{room_id}/out")
-    public void leave(@DestinationVariable String roomId, ChatMessage message) {
-        message.setRoomId(roomId);
-        message.setType("OUT");
-        publisher.publish(message);
+    public void leave(@DestinationVariable String roomId) {
+        log.info("User left room: {}", roomId);
     }
 
     @MessageMapping("/{room_id}/send")
