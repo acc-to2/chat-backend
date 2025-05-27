@@ -11,6 +11,18 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Value("${spring.activemq.broker-url}")
+    private String mqHost;
+
+    @Value("${spring.activemq.port}")
+    private int mqPort;
+
+    @Value("${spring.activemq.user}")
+    private String mqUsername;
+
+    @Value("${spring.activemq.password}")
+    private String mqPassword;
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws") // 클라이언트가 연결할 WebSocket endpoint
@@ -21,6 +33,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/chat"); // 클라이언트 → 서버 메시지 전송 prefix
-        registry.enableSimpleBroker("/chat"); // 서버 → 클라이언트 브로드캐스트 prefix
+        registry.enableStompBrokerRelay("/chat") // 외부 메시지 브로커 사용
+                .setRelayHost(mqHost) // MQ 호스트
+                .setRelayPort(mqPort) // MQ 포트
+                .setClientLogin(mqUsername) // MQ 사용자명
+                .setClientPasscode(mqPassword) // MQ 비밀번호
+                .setSystemLogin(mqUsername)
+                .setSystemPasscode(mqPassword);
     }
 }

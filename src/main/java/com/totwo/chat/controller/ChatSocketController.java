@@ -1,17 +1,12 @@
 package com.totwo.chat.controller;
 
-import com.totwo.chat.common.CommonResponse;
-import com.totwo.chat.dto.UserDto;
 import com.totwo.chat.entity.ChatMessage;
 import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.UserService;
-import com.totwo.chat.service.util.MqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
