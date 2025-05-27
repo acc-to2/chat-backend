@@ -58,9 +58,8 @@ public class ChatController {
     }
 
     @PostMapping("/{room_id}/add-friend")
-    public ResponseEntity<CommonResponse<Object>> addFriend(@PathVariable(name = "room_id") String roomId) {
-        String email = authUtils.getEmail();
-        chatRoomService.addUserToChatRoom(roomId, email);
+    public ResponseEntity<CommonResponse<Object>> addFriend(@PathVariable(name = "room_id") String roomId, @RequestParam("emailList[]") List<String> emailList) {
+        emailList.forEach(e -> chatRoomService.addUserToChatRoom(roomId, e));
         return CommonResponse.created(null);
     }
 
