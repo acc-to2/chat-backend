@@ -21,19 +21,9 @@ public class ChatSocketController {
     private final MqPublisher publisher;
     private final MessageService messageService;
 
-    @MessageMapping("/{room_id}/in")
-    public void join(@DestinationVariable("room_id") String roomId) {
-        log.info("User in room: {}", roomId);
-    }
-
-    @MessageMapping("/{room_id}/out")
-    public void leave(@DestinationVariable("room_id") String roomId) {
-        log.info("User left room: {}", roomId);
-    }
-
     @MessageMapping("/{room_id}/send")
     @SendTo("/{room_id}/in")
-    public void send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
+    public ChatMessage send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         log.info("User in subscribe room: {}", roomId);
         message.setType("SEND");
@@ -44,5 +34,6 @@ public class ChatSocketController {
                 message.getContent(),
                 String.valueOf(message.getTimestamp().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli())
         );
+        return message;
     }
 }

@@ -39,12 +39,11 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.save(
                 Message.builder()
                         .pk(roomIdWithPrefix)
-                        .sk(timestamp + "_" + uuid)
+                        .sk(PrefixUtil.withMsgPrefix(timestamp + "_" + uuid))
                         .content(content)
                         .timestamp(timestamp)
                         .build()
         );
-        log.info("Message saved: roomId={}, senderEmail={}, content={}, timestamp={}", roomId, senderEmail, content, timestamp);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.totwo.chat.repository.base;
 
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
@@ -8,6 +9,7 @@ import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public abstract class DynamoBaseRepository<T> {
     protected final DynamoDbTable<T> table;
 
@@ -17,6 +19,7 @@ public abstract class DynamoBaseRepository<T> {
 
     public void save(T item) {
         table.putItem(item);
+        log.info("Saved item: {}", item);
     }
 
     public Optional<T> load(String pk, String sk) {
