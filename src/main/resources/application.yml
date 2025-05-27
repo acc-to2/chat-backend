@@ -1,10 +1,8 @@
 logging:
   level:
-    root: TRACE  # 전체를 TRACE로 설정 (가장 자세한 로그)
-    org.springframework.web: TRACE  # HTTP 요청 처리 관련
-    org.springframework.messaging: TRACE  # WebSocket/STOMP 관련 메시지 처리
-    org.springframework.jms: TRACE  # JMS 메시지 송수신
-    com.totwo.chat: TRACE  # 프로젝트 전체 TRACE
+    root: INFO
+    org.springframework.jms: DEBUG
+    com.totwo.chat.service.util.MqListener: DEBUG
 
 
 spring:
