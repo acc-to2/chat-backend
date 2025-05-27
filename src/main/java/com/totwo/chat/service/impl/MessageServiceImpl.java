@@ -40,6 +40,7 @@ public class MessageServiceImpl implements MessageService {
                 Message.builder()
                         .pk(roomIdWithPrefix)
                         .sk(PrefixUtil.withMsgPrefix(timestamp + "_" + uuid))
+                        .senderEmail(senderEmail)
                         .content(content)
                         .timestamp(timestamp)
                         .build()
