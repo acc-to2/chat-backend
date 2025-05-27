@@ -21,6 +21,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/chat"); // 클라이언트 → 서버 메시지 전송 prefix
-        registry.enableStompBrokerRelay("/topic"); // 서버 → 클라이언트 브로드캐스트 prefix
+        registry.enableSimpleBroker("/topic"); // 서버 → 클라이언트 브로드캐스트 prefix
     }
 }
