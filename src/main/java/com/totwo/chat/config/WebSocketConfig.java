@@ -39,6 +39,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setClientLogin(mqUsername) // MQ 사용자명
                 .setClientPasscode(mqPassword) // MQ 비밀번호
                 .setSystemLogin(mqUsername)
-                .setSystemPasscode(mqPassword);
+                .setSystemPasscode(mqPassword)
+                .setVirtualHost("/"); // 가상 호스트 설정
     }
 }
