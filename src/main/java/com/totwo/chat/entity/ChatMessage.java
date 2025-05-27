@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class ChatMessage {
     private String roomId;
     private String senderId;
+    private String senderName; // Optional, can be set later
     private String type; // "IN", "OUT", "SEND"
     private String content;
     private LocalDateTime timestamp;

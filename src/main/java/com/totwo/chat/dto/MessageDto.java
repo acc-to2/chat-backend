@@ -24,6 +24,11 @@ public class MessageDto {
     private String senderEmail;
 
     /**
+     * 보낸 사람의 닉네임
+     */
+    private String senderName;
+
+    /**
      * 메세지 내용
      */
     private String content;

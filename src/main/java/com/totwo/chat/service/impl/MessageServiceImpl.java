@@ -1,12 +1,14 @@
 package com.totwo.chat.service.impl;
 
 import com.totwo.chat.dto.MessageDto;
+import com.totwo.chat.dto.UserDto;
 import com.totwo.chat.entity.Message;
 import com.totwo.chat.entity.UserRoomParticipation;
 import com.totwo.chat.repository.ChatRoomRepository;
 import com.totwo.chat.repository.MessageRepository;
 import com.totwo.chat.repository.UserRoomParticipationRepository;
 import com.totwo.chat.service.MessageService;
+import com.totwo.chat.service.UserService;
 import com.totwo.chat.service.util.PrefixUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
+
+    private final UserService userService;
 
     private final MessageRepository messageRepository;
     private final ChatRoomRepository chatRoomRepository;
@@ -58,6 +62,9 @@ public class MessageServiceImpl implements MessageService {
                 .map(message -> MessageDto.builder()
                         .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
                         .senderEmail(message.getSenderEmail())
+                        .senderName(userService.getUserByEmail(message.getSenderEmail())
+                                .map(UserDto::getNickName)
+                                .orElse("Unknown User"))
                         .content(message.getContent())
                         .timestamp(Instant.ofEpochMilli(Long.parseLong(message.getTimestamp()))
                                 .atZone(ZoneId.of("Asia/Seoul")).toString())

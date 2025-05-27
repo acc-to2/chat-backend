@@ -4,6 +4,7 @@ import com.totwo.chat.common.CommonResponse;
 import com.totwo.chat.dto.UserDto;
 import com.totwo.chat.entity.ChatMessage;
 import com.totwo.chat.service.MessageService;
+import com.totwo.chat.service.UserService;
 import com.totwo.chat.service.util.MqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import java.time.ZoneId;
 @Controller
 public class ChatSocketController {
 
-    private final MqPublisher publisher;
+    private final UserService userService;
     private final MessageService messageService;
     private final SimpMessagingTemplate messagingTemplate;
 
@@ -32,6 +33,8 @@ public class ChatSocketController {
         log.info("User in subscribe room: {}", roomId);
         message.setType("SEND");
         message.setTimestamp(LocalDateTime.now());
+        userService.getUserByEmail(message.getSenderId())
+                .ifPresent(user -> message.setSenderName(user.getNickName()));
 
         messageService.saveMessage(
                 roomId,
