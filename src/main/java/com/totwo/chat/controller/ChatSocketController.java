@@ -1,10 +1,13 @@
 package com.totwo.chat.controller;
 
+import com.totwo.chat.common.CommonResponse;
+import com.totwo.chat.dto.UserDto;
 import com.totwo.chat.entity.ChatMessage;
 import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.util.MqPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -23,7 +26,7 @@ public class ChatSocketController {
 
     @MessageMapping("/{room_id}/send")
     @SendTo("/{room_id}/in")
-    public ChatMessage send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
+    public ResponseEntity<CommonResponse<ChatMessage>> send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         log.info("User in subscribe room: {}", roomId);
         message.setType("SEND");
@@ -34,6 +37,6 @@ public class ChatSocketController {
                 message.getContent(),
                 String.valueOf(message.getTimestamp().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli())
         );
-        return message;
+        return CommonResponse.ok(message);
     }
 }
