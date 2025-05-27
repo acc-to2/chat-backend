@@ -72,12 +72,10 @@ public class ChatController {
         log.info("roomId: {}", roomId);
         if(requestDto.isGroup()) { // 그룹 채팅방일 때
             log.info("그룹 채팅방 입니다");
-            for(String e : requestDto.emailList()) {
-                chatRoomService.addUserToChatRoom(roomId, e);
-            }
         }
-        else { // 일대일 채팅방일 때
-            chatRoomService.addUserToChatRoom(roomId, email);
+        chatRoomService.addUserToChatRoom(roomId, email);
+        for(String e : requestDto.emailList()) {
+            chatRoomService.addUserToChatRoom(roomId, e);
         }
 
         return CommonResponse.created(roomId);
