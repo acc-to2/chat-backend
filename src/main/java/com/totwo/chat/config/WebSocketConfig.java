@@ -37,6 +37,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setRelayHost(mqHost) // MQ 호스트
                 .setRelayPort(mqPort) // MQ 포트
                 .setClientLogin(mqUsername) // MQ 사용자명
-                .setClientPasscode(mqPassword); // MQ 비밀번호
+                .setClientPasscode(mqPassword) // MQ 비밀번호
+                .setSystemLogin(mqUsername)
+                .setSystemPasscode(mqPassword);
     }
 }
