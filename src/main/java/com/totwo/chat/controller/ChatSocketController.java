@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
@@ -23,20 +24,22 @@ public class ChatSocketController {
 
     private final MqPublisher publisher;
     private final MessageService messageService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/{room_id}/send")
-    @SendTo("/{room_id}/in")
-    public ResponseEntity<CommonResponse<ChatMessage>> send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
+    public void send(@DestinationVariable("room_id") String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         log.info("User in subscribe room: {}", roomId);
         message.setType("SEND");
         message.setTimestamp(LocalDateTime.now());
+
         messageService.saveMessage(
                 roomId,
                 message.getSenderId(),
                 message.getContent(),
                 String.valueOf(message.getTimestamp().atZone(ZoneId.of("Asia/Seoul")).toInstant().toEpochMilli())
         );
-        return CommonResponse.ok(message);
+
+        messagingTemplate.convertAndSend("/chat/" + roomId + "/in", message);
     }
 }
