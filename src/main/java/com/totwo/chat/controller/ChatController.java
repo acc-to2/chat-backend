@@ -67,8 +67,11 @@ public class ChatController {
     @PostMapping("/room/create")
     public ResponseEntity<CommonResponse<Object>> createRoom(@RequestBody RequestCreateRoomDto requestDto) {
         String email = authUtils.getEmail();
+        log.info("email: {}", email);
         String roomId = chatRoomService.createChatRoom(requestDto.title(), requestDto.isGroup());
+        log.info("roomId: {}", roomId);
         if(requestDto.isGroup()) { // 그룹 채팅방일 때
+            log.info("그룹 채팅방 입니다");
             for(String e : requestDto.emailList()) {
                 chatRoomService.addUserToChatRoom(roomId, e);
             }

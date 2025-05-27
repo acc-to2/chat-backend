@@ -9,6 +9,7 @@ import com.totwo.chat.repository.UserRoomParticipationRepository;
 import com.totwo.chat.service.MessageService;
 import com.totwo.chat.service.util.PrefixUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -75,13 +77,26 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Optional<MessageDto> getLastMessage(String roomId) {
         return messageRepository.getLastMessage(PrefixUtil.withRoomPrefix(roomId))
-                .map(message -> MessageDto.builder()
-                        .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
-                        .senderEmail(message.getSenderEmail())
-                        .content(message.getContent())
-                        .timestamp(Instant.ofEpochMilli(Long.parseLong(message.getTimestamp()))
-                                .atZone(ZoneId.of("Asia/Seoul")).toString())
-                        .build());
+//                .map(message -> MessageDto.builder()
+//                        .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
+//                        .senderEmail(message.getSenderEmail())
+//                        .content(message.getContent())
+//                        .timestamp(Instant.ofEpochMilli(Long.parseLong(message.getTimestamp()))
+//                                .atZone(ZoneId.of("Asia/Seoul")).toString())
+//                        .build());
+                .map(message -> {
+                    String timestamp = message.getTimestamp();
+                    String formattedTime = (timestamp != null)
+                            ? Instant.ofEpochMilli(Long.parseLong(timestamp)).atZone(ZoneId.of("Asia/Seoul")).toString()
+                            : null;
+                    log.info("getLastMessage message: {}", message);
+                    return MessageDto.builder()
+                            .messageId(PrefixUtil.removeMsgPrefix(message.getSk()))
+                            .senderEmail(message.getSenderEmail())
+                            .content(message.getContent())
+                            .timestamp(formattedTime)
+                            .build();
+                });
     }
 
     private void validateChatRoomExists(String roomIdWithPrefix) {
