@@ -18,21 +18,21 @@ public class ChatSocketController {
     private final MqPublisher publisher;
     private final MessageService messageService;
 
-    @MessageMapping("/chat/ws/{room_id}/in")
+    @MessageMapping("/{room_id}/in")
     public void join(@DestinationVariable String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         message.setType("IN");
         publisher.publish(message);
     }
 
-    @MessageMapping("/chat/ws/{room_id}/out")
+    @MessageMapping("/{room_id}/out")
     public void leave(@DestinationVariable String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         message.setType("OUT");
         publisher.publish(message);
     }
 
-    @MessageMapping("/chat/ws/{room_id}/send")
+    @MessageMapping("/{room_id}/send")
     public void send(@DestinationVariable String roomId, ChatMessage message) {
         message.setRoomId(roomId);
         message.setType("SEND");
